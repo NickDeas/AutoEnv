@@ -1,5 +1,6 @@
 import os
 import json
+import webbrowser
 
 class Environment():
 
@@ -16,6 +17,7 @@ class Environment():
 		with open(saveDataLoc) as sdJson:
 			data = json.load(sdJson)
 
+		self.name = data['name']
 		self.apps = data['apps']
 		self.urls = data['urls']
 
@@ -23,8 +25,8 @@ class Environment():
 		saveData = {'name': self.name, 'apps': self.apps, 
 			'urls': self.urls}
 
-		with open('./saved-envs/%s' % (self.name + '.json')):
-			json.dumps(saveData)
+		with open('./saved-envs/%s' % (self.name + '.json'), 'w') as saveFile:
+			json.dump(saveData, saveFile)
 
 
 

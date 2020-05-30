@@ -11,16 +11,18 @@ to add an app or url to the environment for opening.'
 
 manager = EnvManager()
 
-# commands = {
-# 	'newEnv': manager.createEnv,
-# 	'addApp': manager.addApp,
-# 	'addUrl': manager.addUrl,
+commands = {
+	'newEnv': manager.createEnv,
+	'display': manager.display,
+	'addApp': manager.addApp,
+	'addUrl': manager.addUrl,
 # 	'remApp': manager.removeApp,
 # 	'remUrl': manager.removeUrl,
-# }
+	'open':	  manager.openEnv,
+}
 
 def handleCommand(command, args):
-	return
+	commands[command](*args)
 
 if __name__ == "__main__":
 
@@ -28,7 +30,7 @@ if __name__ == "__main__":
 	if len(sys.argv) == 1:
 		print(START_INSTR)
 	else:
-		command = sys.argv
+		command = sys.argv[1]
 		args = sys.argv[2:] if len(sys.argv) > 2 else []
 		handleCommand(command, args)
 
