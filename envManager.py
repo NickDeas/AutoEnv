@@ -19,52 +19,49 @@ class EnvManager():
 		newEnv = Environment(name)
 		newEnv.save()
 
+		return 0
+
 	def rename(self, env, new_name):
 		self.loadEnv(env)
 		self.curEnv.rename(new_name)
 
+		return 0
+
 	def remEnv(self, name):
 		os.remove('./saved-envs/%s.json' % name)
 
-	def list(self):
-		envs = [env[:-5] for env in os.listdir('./saved-envs/')]
-		for i, env in enumerate(envs):
-			print('[%d]: %s' % (i, env))
-
-	def display(self, env):
-		self.loadEnv(env)
-		name = self.curEnv.name
-		apps = self.curEnv.apps
-		urls = self.curEnv.urls
-
-		print('Environment Name: %s' % name)
-		print('Apps: ')
-		for i, app in enumerate(apps):
-			print('\t[%d]: %s' % (i, app))
-		print('Urls: ')
-		for i, url in enumerate(urls):
-			print('\t[%d]: %s' % (i, url))
+		return 0
 
 	def addApp(self, env, appAddr):
 		self.loadEnv(env)
 		self.curEnv.addApp(appAddr)
 		self.curEnv.save()
 
+		return 0
+
 	def addUrl(self, env, url):
 		self.loadEnv(env)
 		self.curEnv.addUrl(url)
 		self.curEnv.save()
+
+		return 0
 
 	def remApp(self, env, appI):
 		self.loadEnv(env)
 		app = self.curEnv.apps[appI]
 		self.curEnv.removeApp(appI)
 
+		return 0
+
 	def remUrl(self, env, urlI):
 		self.loadEnv(env)
 		url = self.curEnv.urls[urlI]
 		self.curEnv.removeUrl(urlI)
 
+		return 0
+
 	def openEnv(self, env):
 		self.loadEnv(env)
 		self.curEnv.open()
+
+		return 0
