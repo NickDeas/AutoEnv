@@ -1,62 +1,32 @@
-import tkinter as tk
-from tkinter import font
-from envManager import EnvManager
-import os
+from kivy.app import App
 
-class AEApplication(tk.Frame):
+#Layout
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.gridlayout import GridLayout
 
-	#Color Scheme Constants
-	P_RED 	= '#A0031D'
-	P_GREY 	= '#A4B6AF'
-	S_GREY 	= '#564D4A'
-	S_BLUE 	= '#001427'
-	S_PURP	= '#5B2333'
+#UI Widgets
+from kivy.uix.label import Label
+from kivy.uix.button import Button
 
-	HEIGHT = 800
-	HEADER_R = 0.15
+class AutoEnvApp(App):
 
-	def __init__(self, parent, *args, **kwargs):
-		tk.Frame.__init__(self, parent, *args, **kwargs)
-		self.parent = parent
+	def build(self):
+		root = BoxLayout(orientation = 'vertical')
 
+		title = Label(text = 'AutoEnv', size_hint_y = 1)
 
-		#Header--------------------------------------------------------
-		header = tk.Frame(parent, 
-			bg = self.P_RED)
-		header.pack(fill = tk.X, side = tk.TOP)
+		body = BoxLayout(orientation = 'vertical', size_hint_y = 4, width = root.width*(7/8))
 
-		title = tk.Label(header, 
-			text = "AutoEnv",
-			height = 2,
-			font = font.Font(family = "Lucida Grande", size = 20),
-			fg = 'white',
-			bg = self.P_RED)
-		title.pack()
-
-		#Body----------------------------------------------------------
-		body = tk.Frame(parent,
-			height = (1-self.HEADER_R)*self.HEIGHT,
-			bg = self.P_GREY)
-		body.pack(fill = tk.BOTH, side = tk.TOP)
-
-		envs = self.listEnvs()
-		env_buttons = []
-		for env in envs:
-			new_button = tk.Button(body,
-				text = env,
-				font = font.Font(family = 'Lucida Grande', size = 10),
-				bg = 'white')
-			new_button.pack(side = tk.TOP, pady = 10, padx = 10)
-			env_buttons.append(new_button)
+		subtitle = BoxLayout(text = 'My Environments')
 
 
-	def listEnvs(self):
-		envs = [env[:-5] for env in os.listdir('./saved-envs/')]
-		return envs
+		body.add_widget(subtitle)
 
+		root.add_widget(title)
+		root.add_widget(body)
+
+		return root
 
 
 if __name__ == "__main__":
-	root = tk.Tk()
-	AEApplication(root).pack(side="top", fill="both", expand=True)
-	root.mainloop()
+	AutoEnvApp().run()
