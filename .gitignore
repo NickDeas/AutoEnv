@@ -1,3 +1,5 @@
 saved-envs/
 *.json
 __pycache__
+copy_code.py
+mainscreen.ui

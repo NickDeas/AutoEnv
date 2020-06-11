@@ -11,6 +11,10 @@ class EnvManager():
 	def __init__(self):
 		self.curEnv = None
 
+	def listEnvs(self):
+		envs = [env_name[:-5] for env_name in os.listdir('./saved-envs/')]
+		return envs
+
 	def loadEnv(self, name):
 		self.curEnv = Environment()
 		self.curEnv.load('./saved-envs/%s.json' % name)
