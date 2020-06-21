@@ -18,7 +18,7 @@ envManager = EnvManager()
 def getEnvList():
     return envManager.listEnvs()
 
-class Ui_MainWindow(object):
+class Ui_MainWindow(QtWidgets.QWidget):
 
     def setupUi(self, MainWindow):
 
@@ -91,6 +91,8 @@ class Ui_MainWindow(object):
 "font: 12pt \"Lucida Sans\";")
         self.add_app.setObjectName("add_app")
         self.add_app.setVisible(False)
+        self.add_app.clicked.connect(self.new_app)
+
         self.right_pane.addWidget(self.add_app, 0, QtCore.Qt.AlignRight)
         self.urls_title = QtWidgets.QLabel(self.gridLayoutWidget)
         self.urls_title.setStyleSheet("color: white;\n"
@@ -107,6 +109,8 @@ class Ui_MainWindow(object):
 "font: 12pt \"Lucida Sans\";")
         self.add_url.setObjectName("add_url")
         self.add_url.setVisible(False)
+        self.add_url.clicked.connect(self.new_url)
+
         self.right_pane.addWidget(self.add_url, 0, QtCore.Qt.AlignRight)
         self.right_pane.setStretch(0, 1)
         self.right_pane.setStretch(1, 3)
@@ -146,18 +150,23 @@ class Ui_MainWindow(object):
 "background-color: rgb(201, 201, 201);\n"
 "font: 12pt \"Lucida Sans\";")
         self.new_env.setObjectName("new_env")
+        self.new_env.clicked.connect(self.add_env)
+
         self.del_env = QtWidgets.QPushButton(self.centralwidget)
         self.del_env.setGeometry(QtCore.QRect(70, 400, 75, 20))
         self.del_env.setStyleSheet("color: black;\n"
 "background-color: rgb(201, 201, 201);\n"
 "font: 12pt \"Lucida Sans\";")
         self.del_env.setObjectName("del_env")
+        self.del_env.clicked.connect(self.delete_env)
+
         self.open_env = QtWidgets.QPushButton(self.centralwidget)
         self.open_env.setGeometry(QtCore.QRect(150, 400, 75, 20))
         self.open_env.setStyleSheet("color: black;\n"
 "background-color: rgb(201, 201, 201);\n"
 "font: 12pt \"Lucida Sans\";")
         self.open_env.setObjectName("open_env")
+        self.open_env.clicked.connect(self.open_env_contents)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 637, 18))
@@ -192,6 +201,8 @@ class Ui_MainWindow(object):
         self.apps_title.setVisible(True)
         self.urls_title.setVisible(True)
 
+    lambda env: make_display
+
     def make_display(self, env_name):
         def display():
             self.showQV()
@@ -213,23 +224,77 @@ class Ui_MainWindow(object):
 
             for app in apps:
                 temp_app_lbl = QtWidgets.QLabel()
+                temp_app_lbl.setStyleSheet('color: white')
                 self.app_list.addWidget(temp_app_lbl)
                 temp_app_lbl.setText(app[app.rfind('/')+1:])
                 self.app_lbls.append(temp_app_lbl)
 
             for url in urls:
                 temp_url_lbl = QtWidgets.QLabel()
+                temp_url_lbl.setStyleSheet('color: white')
                 self.url_list.addWidget(temp_url_lbl)
                 temp_url_lbl.setText(url)
                 temp_url_lbl.setWordWrap(True)
                 self.url_lbls.append(temp_url_lbl)
+
+            for i, env_b in enumerate(self.env_buttons): 
+                if self.view_env == env_b.text():
+                    self.env_list.itemAt(i).widget().setStyleSheet('color: grey;\nbackground-color: white;')
+                else:
+                    self.env_list.itemAt(i).widget().setStyleSheet('color: white;\nbackground-color: grey;')
+
         return display
 
-    def del_env():
+    def delete_env(self):
+        #Remove environment from save data
         envManager.remEnv(self.view_env)
 
-        for env in self.env_buttons:
-            if self.view_env == env.
+        #Delete env from button list
+        for i, env_b in enumerate(self.env_buttons): 
+            if self.view_env == env_b.text():
+                self.env_list.itemAt(i).widget().setParent(None)
+
+        #Clear env info pane
+        for i in reversed(range(self.app_list.count())): 
+                self.app_list.itemAt(i).widget().setParent(None)
+
+        for i in reversed(range(self.url_list.count())): 
+            self.url_list.itemAt(i).widget().setParent(None)
+
+
+    def add_env(self):
+        text, okPressed = QtWidgets.QInputDialog.getText(self, "New Environment",
+            "New Environment Name:", QtWidgets.QLineEdit.Normal, "")
+        if okPressed and text != '':
+            #Need duplicate name checking
+            envManager.createEnv(text)
+
+        new_button = QtWidgets.QPushButton(self.gridLayoutWidget)
+        new_button.setObjectName(text)
+        new_button.clicked.connect(self.make_display(text))
+        new_button.setStyleSheet('color:white;\nbackground-color: grey;')
+        self.env_buttons.append(new_button)
+        self.env_list.addWidget(new_button)
+        self.env_names.append(text)
+
+        self.retranslateUi(MainWindow)
+
+    def open_env_contents(self):
+        envManager.openEnv(self.view_env)
+
+    def new_app(self):
+        text, okPressed = QtWidgets.QInputDialog.getText(self, "New Application",
+            "App File Location:", QtWidgets.QLineEdit.Normal, "")
+        if okPressed and text != '':
+            #Need duplicate name checking
+            envManager.addApp(self.view_env, text)
+
+    def new_url(self):
+        text, okPressed = QtWidgets.QInputDialog.getText(self, "New Url",
+            "New Url Address:", QtWidgets.QLineEdit.Normal, "")
+        if okPressed and text != '':
+            #Need duplicate name checking
+            envManager.addUrl(self.view_env, text)
 
 
 if __name__ == "__main__":
