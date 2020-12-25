@@ -1,4 +1,5 @@
 saved-envs/
+old/
 *.json
 __pycache__
 copy_code.py

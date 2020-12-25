@@ -25,8 +25,6 @@ commands = {
 	'newEnv': 	manager.createEnv,
 	'remEnv':	manager.remEnv,
 	'rename':	manager.rename,
-	# 'list':		manager.list,
-	# 'display': 	manager.display,
 	'addApp': 	manager.addApp,
 	'addUrl': 	manager.addUrl,
 	'remApp': 	manager.remApp,
