@@ -1,5 +1,5 @@
 # AutoEnv
-Package applications and websites into "environments" to easily prepare for recurring events.
+Package applications and websites into "environments" to easily prepare for recurring events.  
 
 # HowTo
 
@@ -14,7 +14,7 @@ Preface all commands with "autoenv"
 | rem_env [env_name] | Delete a created environment | |
 | list | List created environments | |
 | display [env_name] | Show applications and websites associated with environment | |
-| addApp [env_name] [exe_location] | Add an application to given environment | file_location must from root i.e. "C:// ... /app.exe"|
+| addApp [env_name] [exe_location] | Add an application to given environment | file_location must be absolute i.e. "C:// ... /app.exe"|
 | addUrl [env_name] [url_address] | Add a website to given environment | Only google chrome supported right now |
 | remApp [env_name] [app_index] | Remove an application from given environment | View app index with display command |
 | remUrl [env_name] [url_index] | Remove a website from given environment | View url index with display command |
@@ -23,4 +23,8 @@ Preface all commands with "autoenv"
 ### Getting file locations
 Simply find a file in file explorer equivalent, and copy the address, including the executable/file name and extension
 
-## GUI
+# Future Plans
+* Allow execution of scripts beyond program executables (i.e. script to mute microphone for meetings, login to websites, etc.)
+* Produce executable for each environment so it can be placed on the Desktop
+* Graphical interface (either localhost web-based, or other)
+* Integrate with scheduler
